@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Test for Storage Access API from an iframe</title>
+    <script type="module" src="http://localhost:8081/external.js"></script>
+    <script src="frame.js" type="module"></script>
+  </head>
+
+
+  <body>
+    <button id="check-login">Am I logged in?</button>
+    <button id="logout" hidden>Log Out</button>
+    <div class="auth-forms">
+      <form id="signup-form">
+        <span>Sign Up</span>
+        <label>Email <input name="email" type="email"></label>
+        <label>Password <input name="password" type="password"></label>
+        <button type="submit">Create Account</button>
+      </form>
+      <hr>
+      <form id="login-form">
+        <span>Log In</span>
+        <label>Email <input name="email" type="email"></label>
+        <label>Password <input name="password" type="password"></label>
+        <button type="submit">Log In</button>
+      </form>
+    </div>
+    <form id="message-form" hidden>
+      <label>Message <textarea name="content"></textarea></label>
+      <button type="submit">Send Message</button>
+    </form>
+  </body>
+</html>

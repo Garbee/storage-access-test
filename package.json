@@ -1,0 +1,17 @@
+{
+  "name": "storage-access-test",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "run-p serve:main serve:frame",
+    "serve:main": "http-server . -p 8081 -c-1 --cors",
+    "serve:frame": "http-server . -p 8089 -c-1 --cors"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "http-server": "^14.1.1",
+    "npm-run-all": "^4.1.5"
+  }
+}
