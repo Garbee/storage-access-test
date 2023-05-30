@@ -51,8 +51,40 @@ class Agent {
     }, this.host);
   }
 
-  getCookie() {
-    return document.cookie;
+  async getCookie() {
+    if (document.hasStorageAccess === null) {
+      return document.cookie;
+    }
+
+    const hasAccess = await document.hasStorageAccess();
+
+    if (hasAccess) {
+      return document.cookie;
+    }
+
+    const permission = await navigator.permissions.query({
+      name: "storage-access",
+    });
+
+    if (permission.state === "granted") {
+      // If so, you can just call requestStorageAccess() without a user interaction,
+      // and it will resolve automatically.
+      await document.requestStorageAccess();
+      return document.cookie;
+    } else if (permission.state === "prompt") {
+      // Need to call requestStorageAccess() after a user interaction
+      document.body.addEventListener("click", async () => {
+        try {
+          await document.requestStorageAccess();
+          return document.cookie;
+        } catch (err) {
+          console.error(`Error obtaining storage access: ${err}.`);
+        }
+      });
+    } else if (permission.state === "denied") {
+      // User has denied unpartitioned cookie access, so we'll
+      // need to do something else
+    }
   }
 
   destroy() {
