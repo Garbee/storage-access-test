@@ -77,4 +77,11 @@ document.body.addEventListener('app-logout', () => {
   logoutAction.hidden = true;
 });
 
+// Need to wait a little bit in this demo for the iframe
+// to come online.
+await new Promise((resolve) => {
+  setTimeout(() => {
+    resolve();
+  }, 2000);
+})
 agent.isLoggedIn();

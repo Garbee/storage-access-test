@@ -51,6 +51,10 @@ class Agent {
     }, this.host);
   }
 
+  getCookie() {
+    return document.cookie;
+  }
+
   destroy() {
     document.body.removeChild(this.frame);
     this.frame.remove();

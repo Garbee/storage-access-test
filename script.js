@@ -30,10 +30,12 @@ window.login = async function (email, password) {
   });
   if (error) {
     console.error(error);
+    document.cookie = 'loggedin=false';
     return false;
   }
 
   fireLogin();
+  document.cookie = "loggedin=true";
   return true;
 }
 
@@ -68,12 +70,16 @@ window.isLoggedIn = async function () {
 
   if (error) {
     console.error(error);
+    document.cookie = "loggedin=false";
     return false;
   }
 
   if (data.session === null) {
+    document.cookie = "loggedin=false";
     return false;
   }
+
+  document.cookie = "loggedin=true";
 
   return true;
 };

@@ -6,7 +6,9 @@
   "scripts": {
     "start": "run-p serve:main serve:frame",
     "serve:main": "http-server . -p 8081 -c-1 --cors",
-    "serve:frame": "http-server . -p 8089 -c-1 --cors"
+    "serve:frame": "http-server . -p 8089 -c-1 --cors",
+    "build:main": "rm -rf dist && mkdir dist && cp index.html dist/ && cp external.js dist/ && cp script.js dist/",
+    "build:frame": "rm -rf dist && mkdir dist && cp frame.html dist/index.html && cp frame.js dist/"
   },
   "author": "",
   "license": "MIT",
