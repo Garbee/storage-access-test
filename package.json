@@ -7,8 +7,9 @@
     "start": "run-p serve:main serve:frame",
     "serve:main": "http-server . -p 8081 -c-1 --cors",
     "serve:frame": "http-server . -p 8089 -c-1 --cors",
-    "build:main": "rm -rf dist && mkdir dist && cp index.html dist/ && cp external.js dist/ && cp script.js dist/",
+    "build:main": "run-s make:main remove-localhost",
     "build:frame": "run-s make:frame remove-localhost",
+    "make:main": "rm -rf dist && mkdir dist && cp index.html dist/ && cp external.js dist/ && cp script.js dist/",
     "make:frame": "rm -rf dist && mkdir dist && cp frame.html dist/index.html && cp frame.js dist/",
     "remove-localhost": "find dist -type f -exec sed -i '' -e 's#http://localhost:8081#https://storage.garbee.me#g' {} \\;"
   },
