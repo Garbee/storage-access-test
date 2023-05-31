@@ -23,7 +23,7 @@ window.addEventListener('message', event => {
       if (event.data.data === true) {
         fireLogin();
       }
-      alert(event.data.data);
+      console.log(`Logged in status: `, event.data.data);
       break;
     default:
       break;
