@@ -87,6 +87,13 @@ class Agent {
     }
   }
 
+  sendFetch() {
+    return fetch(this.frame.src, {
+      method: 'GET',
+      credentials: 'include',
+    });
+  }
+
   destroy() {
     document.body.removeChild(this.frame);
     this.frame.remove();
