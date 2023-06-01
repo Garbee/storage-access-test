@@ -1,6 +1,6 @@
 window.sendFetch = async function () {
   const doFetch = function () {
-    return fetch(this.frame.src, {
+    return fetch(window.location.href, {
       method: 'GET',
       credentials: 'include',
     });
