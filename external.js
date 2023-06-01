@@ -87,11 +87,40 @@ class Agent {
     }
   }
 
-  sendFetch() {
+  doFetch() {
     return fetch(this.frame.src, {
       method: 'GET',
       credentials: 'include',
     });
+  }
+
+  async sendFetch() {
+    if (document.hasStorageAccess === null) {
+      return await this.doFetch();
+    }
+
+    const hasAccess = await document.hasStorageAccess();
+    if (hasAccess) {
+      return await this.doFetch();
+    }
+
+    const permission = await navigator.permissions.query({
+      name: "storage-access",
+    });
+
+    if (permission.state === "granted") {
+      await document.requestStorageAccess();
+      return await this.doFetch();
+    }
+    if (permission.state === "prompt") {
+      await document.requestStorageAccess();
+      return await this.doFetch();
+    }
+    if (permission.state === "denied") {
+      // User has denied unpartitioned cookie access, so we'll
+      // need to do something else
+      console.error('The user has denied access to 3rd party cookies');
+    }
   }
 
   destroy() {

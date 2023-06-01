@@ -1,3 +1,39 @@
+window.sendFetch = async function () {
+  const doFetch = function () {
+    return fetch(this.frame.src, {
+      method: 'GET',
+      credentials: 'include',
+    });
+  };
+
+  if (document.hasStorageAccess === null) {
+    return await doFetch();
+  }
+
+  const hasAccess = await document.hasStorageAccess();
+  if (hasAccess) {
+    return await doFetch();
+  }
+
+  const permission = await navigator.permissions.query({
+    name: "storage-access",
+  });
+
+  if (permission.state === "granted") {
+    await document.requestStorageAccess();
+    return await doFetch();
+  }
+  if (permission.state === "prompt") {
+    await document.requestStorageAccess();
+    return await doFetch();
+  }
+  if (permission.state === "denied") {
+    // User has denied unpartitioned cookie access, so we'll
+    // need to do something else
+    console.error('The user has denied access to 3rd party cookies');
+  }
+};
+
 window.fireLogin = function () {
   const event = new CustomEvent('app-login');
   document.body.dispatchEvent(event);
@@ -87,6 +123,12 @@ window.isLoggedIn = async function () {
 window.addEventListener('message', async (event) => {
   const { command, data } = event.data;
   switch (command) {
+    case 'sendFetch':
+      event.source.postMessage({
+        responseTo: 'sendFetch',
+        data: await window.sendFetch(),
+      }, event.origin);
+      break;
     case 'login':
       event.source.postMessage({
         responseTo: 'login',
@@ -112,6 +154,9 @@ window.addEventListener('message', async (event) => {
       break;
   }
 });
+
+
+const ajaxAction = document.querySelector('#ajax-action');
 
 const isInIframe = window.location !== window.parent.location;
 const authForms = document.querySelector('.auth-forms');
@@ -188,4 +233,8 @@ document.body.addEventListener('app-logout', () => {
   authForms.hidden = false;
   messageForm.hidden = true;
   logoutAction.hidden = true;
+});
+
+ajaxAction.addEventListener('click', () => {
+  agent.sendFetch();
 });

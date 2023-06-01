@@ -30,6 +30,8 @@ window.addEventListener('message', event => {
   }
 });
 
+const ajaxAction = document.querySelector('#ajax-action');
+
 const isLoggedInAction = document.querySelector('#check-login');
 const authForms = document.querySelector('.auth-forms');
 const loginForm = document.querySelector('#login-form');
@@ -77,11 +79,6 @@ document.body.addEventListener('app-logout', () => {
   logoutAction.hidden = true;
 });
 
-// Need to wait a little bit in this demo for the iframe
-// to come online.
-await new Promise((resolve) => {
-  setTimeout(() => {
-    resolve();
-  }, 2000);
-})
-agent.isLoggedIn();
+ajaxAction.addEventListener('click', () => {
+  agent.sendFetch();
+});
