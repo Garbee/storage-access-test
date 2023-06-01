@@ -104,23 +104,18 @@ class Agent {
       return await this.doFetch();
     }
 
-    const permission = await navigator.permissions.query({
-      name: "storage-access",
-    });
+    // Chromium only thing
+    // const permission = await navigator.permissions.query({
+    //   name: "storage-access",
+    // });
 
-    if (permission.state === "granted") {
+    try {
       await document.requestStorageAccess();
-      return await this.doFetch();
+    } catch {
+      console.error('Access to our cookies was denied');
     }
-    if (permission.state === "prompt") {
-      await document.requestStorageAccess();
-      return await this.doFetch();
-    }
-    if (permission.state === "denied") {
-      // User has denied unpartitioned cookie access, so we'll
-      // need to do something else
-      console.error('The user has denied access to 3rd party cookies');
-    }
+
+    return await doFetch();
   }
 
   destroy() {
