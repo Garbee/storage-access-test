@@ -13,8 +13,6 @@ class Agent {
     ];
     sandboxTokens.forEach(token => this.frame.sandbox.add(token));
 
-    this.frame.hidden = true;
-
     this.frame.src = "http://localhost:8081";
 
     document.body.appendChild(this.frame);
