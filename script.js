@@ -230,7 +230,7 @@ document.body.addEventListener('app-logout', () => {
   logoutAction.hidden = true;
 });
 
-ajaxAction.addEventListener('click', async () => {
+ajaxAction.addEventListener('click', () => {
   const doFetch = function () {
     return fetch(window.location.href, {
       method: 'GET',
@@ -239,24 +239,24 @@ ajaxAction.addEventListener('click', async () => {
   };
 
   if (document.hasStorageAccess === null) {
-    return await doFetch();
+    return doFetch();
   }
 
-  const hasAccess = await document.hasStorageAccess();
-  if (hasAccess) {
-    return await doFetch();
-  }
+  return document.hasStorageAccess().then((access) => {
+    if (access) {
+      return doFetch();
+    }
+
+    return document.requestStorageAccess();
+  }).then(() => {
+    return doFetch();
+  }, () => {
+    console.error('Access has been denied');
+  });
+
 
   // Chromium only thing
   // const permission = await navigator.permissions.query({
   //   name: "storage-access",
   // });
-
-  try {
-    await document.requestStorageAccess();
-  } catch {
-    console.error('Access to our cookies was denied');
-  }
-
-  return await doFetch();
 });
