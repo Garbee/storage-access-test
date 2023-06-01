@@ -230,6 +230,33 @@ document.body.addEventListener('app-logout', () => {
   logoutAction.hidden = true;
 });
 
-ajaxAction.addEventListener('click', () => {
-  window.sendFetch();
+ajaxAction.addEventListener('click', async () => {
+  const doFetch = function () {
+    return fetch(window.location.href, {
+      method: 'GET',
+      credentials: 'include',
+    });
+  };
+
+  if (document.hasStorageAccess === null) {
+    return await doFetch();
+  }
+
+  const hasAccess = await document.hasStorageAccess();
+  if (hasAccess) {
+    return await doFetch();
+  }
+
+  // Chromium only thing
+  // const permission = await navigator.permissions.query({
+  //   name: "storage-access",
+  // });
+
+  try {
+    await document.requestStorageAccess();
+  } catch {
+    console.error('Access to our cookies was denied');
+  }
+
+  return await doFetch();
 });
