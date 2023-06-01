@@ -236,5 +236,5 @@ document.body.addEventListener('app-logout', () => {
 });
 
 ajaxAction.addEventListener('click', () => {
-  agent.sendFetch();
+  window.sendFetch();
 });
