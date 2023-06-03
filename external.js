@@ -30,23 +30,17 @@ class Agent {
       return await this.doFetch();
     }
 
+    await document.requestStorageAccess();
+
     const hasAccess = await document.hasStorageAccess();
     if (hasAccess) {
       return await this.doFetch();
     }
 
-    // Chromium only thing
-    // const permission = await navigator.permissions.query({
-    //   name: "storage-access",
-    // });
-
-    try {
-      await document.requestStorageAccess();
-    } catch {
-      console.error('Access to our cookies was denied');
-    }
-
-    return await doFetch();
+    console.error(
+      `For some reason we do not have access.
+      Possibly denied by the user or automatically by the user agent.`
+    );
   }
 
   destroy() {
