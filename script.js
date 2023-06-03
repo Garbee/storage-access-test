@@ -34,6 +34,8 @@ const ajaxAction = document.querySelector('#ajax-action');
 const isInIframe = window.location !== window.parent.location;
 
 ajaxAction.addEventListener('click', () => {
+  window.sendFetch()
+  return;
   const doFetch = function () {
     return fetch(window.location.href, {
       method: 'GET',
