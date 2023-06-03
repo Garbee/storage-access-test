@@ -1,20 +1,19 @@
 # Storage Access Demo Project
 
-Quick concept app using Supabase authentication and database to test a concept with
-the Storage Access API.
+Quick concept of using the storage access API in Safari.
 
+Running locally is possible but more work since you need to make up some fake domains
+to route locally using a hosts file to force this.
 
-To run:
+Steps to test using a hosted version:
 
-1. Install dependencies with `npm ci`
-1. Run the servers with `npm start`
-1. Open `http://localhost:8081` and signup, this is the main host for authorization
-1. Open `http://localhost:8089/frame.html`, this will fail on load to pickup authentication. Press "Am I logged in?" to check the status.
-1. Login on another browser/profile (can be same account)
-1. Send a message from either browser
-1. See it appear on the other browser (they are broadcast to anyone logged in at the time they are sent)
+1. Visit https://storage.garbee.me which is the host domain
+1. Click the "Send ajax request" button which will just fetch itself
+1. Visit https://storage.garbee.me which is the iframed domain
+1. Open DevTools
+1. Click the "Send ajax request" button which is in side of the iframe of the host.
+1. See the popup asking to give permission to access cookies
+1. Allow access
+1. Check the network request and verify the HTTP only cookie was sent with `header=value;` at the start
 
-
-This is probably not strong enough differences on the origin to hit partitioned cookies.
-That will require hosting it remotely on actual sites with different URLs.
-Since localhost is always kinda special, not sure if it triggers it or not.
+To clear the prompt memory, you need to clear history. If you conducted the rest recently and need to keep Safari history you can delete the last hour. Otherwise figure out how to delete these domains specifically or all history.
