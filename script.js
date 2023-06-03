@@ -45,16 +45,14 @@ ajaxAction.addEventListener('click', () => {
     return doFetch();
   }
 
-  return document.hasStorageAccess().then((access) => {
-    if (access) {
-      return doFetch();
-    }
-
-    return document.requestStorageAccess();
-  }).then(() => {
-    return doFetch();
-  }, () => {
-    console.error('Access has been denied');
+  return document.requestStorageAccess().then(() => {
+    document.hasStorageAccess().then((access) => {
+      if (access) {
+        return doFetch();
+      }
+    }).catch((e) => {
+      console.error(e);
+    });
   });
 
 
