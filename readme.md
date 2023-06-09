@@ -9,7 +9,7 @@ Steps to test using a hosted version:
 
 1. Visit https://storage.garbee.me which is the host domain
 1. Click the "Send ajax request" button which will just fetch itself
-1. Visit https://storage.garbee.me which is the iframed domain
+1. Visit https://storage.garbee.dev which is the iframed domain
 1. Open DevTools
 1. Click the "Send ajax request" button which is in side of the iframe of the host.
 1. See the popup asking to give permission to access cookies
