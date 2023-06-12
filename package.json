@@ -3,19 +3,16 @@
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "run-p serve:main serve:frame",
-    "serve:main": "http-server . -p 8081 -c-1 --cors",
-    "serve:frame": "http-server . -p 8089 -c-1 --cors",
-    "build:main": "run-s make:main remove-localhost",
-    "build:frame": "run-s make:frame remove-localhost",
-    "make:main": "rm -rf dist && mkdir dist && cp index.html dist/ && cp external.js dist/ && cp script.js dist/",
-    "make:frame": "rm -rf dist && mkdir dist && cp frame.html dist/index.html && cp frame.js dist/",
-    "remove-localhost": "find dist -type f -exec sed -i '' -e 's#http://localhost:8081#https://storage.garbee.me#g' {} \\;"
+    "start": "node src/index.js"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@hapi/cookie": "^12.0.1",
+    "@hapi/hapi": "^21.3.2",
+    "bcrypt": "^5.1.0",
     "http-server": "^14.1.1",
     "npm-run-all": "^4.1.5"
   }
