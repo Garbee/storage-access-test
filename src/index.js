@@ -49,7 +49,30 @@ const init = async () => {
         method: 'GET',
         path: '/',
         handler: (request, h) => {
-            return 'Hello World!';
+            return `
+            <!doctype html>
+            <title>Landing page</title>
+            <p>
+                You have successfully logged in.
+                You may now return to the application to finish authenticating with it.
+            </p>
+            <button onclick="closeUp()" hidden>Close login window</button>
+
+            <script>
+                if (window.opener) {
+                    document.querySelector('button').hidden = false;
+                }
+                // We should detect if we can even call close... Not sure how right off.
+                window.closeUp = function() {
+                    window.opener?.postMessage(
+                        {
+                            action: "loggedIn",
+                        },
+                    );
+                    window.close();
+                }
+            </script>
+            `;
         }
     });
 
@@ -58,15 +81,17 @@ const init = async () => {
             path: '/login',
             handler: function (request, h) {
 
-                return ` <html>
+                return `
+                <!doctype html>
+                <html>
                             <head>
                                 <title>Login page</title>
                             </head>
                             <body>
                                 <h3>Please Log In</h3>
                                 <form method="post" action="/login">
-                                    Username: <input type="text" name="username" value="john"><br>
-                                    Password: <input type="password" name="password" value="secret"><br/>
+                                    <label>Username: <input type="text" name="username" value="john"></label><br>
+                                    <label>Password: <input type="password" name="password" value="secret"></label><br/>
                                 <input type="submit" value="Login"></form>
                             </body>
                         </html>`;
