@@ -1,4 +1,5 @@
 'use strict';
+import 'dotenv/config';
 import Bcrypt from 'bcrypt';
 import Hapi from '@hapi/hapi';
 import cookieAuth from '@hapi/cookie';
@@ -15,8 +16,8 @@ const users = [
 const init = async () => {
 
     const server = Hapi.server({
-        port: 3000,
-        host: 'localhost'
+        port: process.env.HOST_PORT,
+        host: 'localhost',
     });
 
     await server.register(cookieAuth);
@@ -75,6 +76,41 @@ const init = async () => {
             `;
         }
     });
+
+    server.route({
+            method: 'GET',
+            path: '/frame',
+            handler: function (request, h) {
+
+                return `
+                <!doctype html>
+                <html>
+                            <head>
+                                <title>Login page</title>
+                            </head>
+                            <body>
+                                <p>
+                                    Please <a href="http://localhost:3000/login" rel="opener" target="_blank">log in</a> to use Connectifi.
+                                </p>
+                                <button>Send fetch</button>
+                                <script>
+                                    window.addEventListener("message", (e) => {
+                                        document.querySelector('p').textContent = "You have successfully logged in please attempt the fetch request.";
+                                    });
+
+                                    document.querySelector('button').addEventListener('click', async () => {
+                                        console.log(await fetch('http://localhost:3000', {
+                                            credentials: 'include',
+                                        }));
+                                    });
+                                </script>
+                            </body>
+                        </html>`;
+            },
+            options: {
+                auth: false
+            }
+        });
 
     server.route({
             method: 'GET',
